@@ -37,9 +37,9 @@ registerRoute(
       return false;
     } // If this looks like a URL for a resource, because it contains // a file extension, skip.
 
-    if (url.pathname.match(fileExtensionRegexp)) {
-      return false;
-    } // Return true to signal that we want to use the handler.
+    //if (url.pathname.match(fileExtensionRegexp)) {
+    //  return false;
+    //} // Return true to signal that we want to use the handler.
 
     return true;
   },
@@ -70,3 +70,15 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+
+self.addEventListener("fetch",(event)=>{
+  if(!navigator.onLine){
+      event.respondWith(
+          cache.match(event.request).then((resp)=>{
+              if(resp){
+                  return resp
+              }
+          })
+      )
+  }
+})
